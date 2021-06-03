@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaspDeck.Software
 {
-  public class ProgramData
+  public class SoftwareData
   {
     private string name;
     private string action;

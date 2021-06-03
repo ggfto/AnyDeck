@@ -41,10 +41,11 @@ namespace RaspDeck
     {
       if (session != null)
       {
-        session.SimpleAudioVolume.Mute = data.Mute;
         float volume;
         volume = data.Volume / 100.0f;
-        if (data.Volume > 0)
+        if (data.Mute)
+          session.SimpleAudioVolume.Mute = data.Mute;
+        else if (data.Volume > 0)
         {
           var newVolume = volume / masterVolume;
           if (newVolume <= 1)
