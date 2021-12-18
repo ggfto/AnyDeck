@@ -7,6 +7,7 @@ namespace RaspDeck
   class MixerMaster
   {
     private string id;
+    private string title;
     private string description;
     private int volume;
     private string icon;
@@ -21,7 +22,8 @@ namespace RaspDeck
     {
       channels = new Dictionary<int, MixerChannel>();
       id = device.ID;
-      description = device.FriendlyName;
+      title = device.FriendlyName.Substring(0, device.FriendlyName.IndexOf("(")).Trim();
+      description = device.DeviceFriendlyName;
       volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
       icon = null;
       mute = device.AudioEndpointVolume.Mute;
@@ -45,7 +47,8 @@ namespace RaspDeck
       if (device != null)
       {
         this.id = device.ID;
-        description = device.FriendlyName;
+        title = device.FriendlyName.Substring(0, device.FriendlyName.IndexOf("(")).Trim();
+        description = device.DeviceFriendlyName;
         volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
         icon = null;
         mute = device.AudioEndpointVolume.Mute;
@@ -105,6 +108,7 @@ namespace RaspDeck
     }
 
     public string Id { get => id; set => id = value; }
+    public string Title { get => title; set => title = value; }
     public string Description { get => description; set => description = value; }
     public int Volume { get => volume; set => volume = value; }
     public string Icon { get => icon; set => icon = value; }

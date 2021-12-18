@@ -14,6 +14,7 @@ namespace RaspDeck
   {
     string appName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
     string version = "v" + Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", "").Replace("0", "");
+    readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
@@ -26,6 +27,14 @@ namespace RaspDeck
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = appName, Version = version });
       });
+      services.AddCors(options =>
+      {
+        options.AddPolicy(name: MyAllowSpecificOrigins,
+                          builder =>
+                          {
+                            builder.WithOrigins("http://localhost:4200");
+                          });
+      });
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
@@ -33,6 +42,7 @@ namespace RaspDeck
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
+        app.UseCors(MyAllowSpecificOrigins);
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", appName + " " + version));
       }
       app.UseFileServer(new FileServerOptions
