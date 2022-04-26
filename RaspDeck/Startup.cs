@@ -32,7 +32,7 @@ namespace RaspDeck
         options.AddPolicy(name: MyAllowSpecificOrigins,
                           builder =>
                           {
-                            builder.WithOrigins("http://localhost:4200");
+                            builder.WithOrigins("http://localhost:5000");
                           });
       });
     }
@@ -49,7 +49,7 @@ namespace RaspDeck
       {
         FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "Static")),
-        RequestPath = "/config",
+        RequestPath = "",
         EnableDefaultFiles = true
       });
       app.UseRouting();

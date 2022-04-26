@@ -1,5 +1,9 @@
 using NAudio.CoreAudioApi;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 
 namespace RaspDeck
@@ -20,47 +24,36 @@ namespace RaspDeck
     }
     public MixerMaster(MMDevice device)
     {
-      channels = new Dictionary<int, MixerChannel>();
+      newMaster(device);
+    }
+    public MixerMaster(string idString)
+    {
+      var devices = new MMDeviceEnumerator();
+      var device = devices.GetDevice(idString);
+      if (device.State.CompareTo(DeviceState.Unplugged) == 0 || device.State.CompareTo(DeviceState.NotPresent) == 0 || device.State.CompareTo(DeviceState.Disabled) == 0) device = null;
+      if (device != null)
+      {
+        newMaster(device);
+      }
+    }
+
+    private void newMaster(MMDevice device)
+    {
       id = device.ID;
       title = device.FriendlyName.Substring(0, device.FriendlyName.IndexOf("(")).Trim();
       description = device.DeviceFriendlyName;
       volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
-      icon = null;
       mute = device.AudioEndpointVolume.Mute;
+      icon = null;
       if (device.DataFlow == DataFlow.Render)
       {
         var sessions = device.AudioSessionManager.Sessions;
+        channels = new Dictionary<int, MixerChannel>();
         for (int i = 0; i < sessions.Count; i++)
         {
           if (sessions[i].IsSystemSoundsSession) continue;
           var channel = new MixerChannel(sessions[i], device.AudioEndpointVolume.MasterVolumeLevelScalar);
           channels[(int)sessions[i].GetProcessID] = channel;
-        }
-      }
-    }
-    public MixerMaster(string id)
-    {
-      channels = new Dictionary<int, MixerChannel>();
-      var devices = new MMDeviceEnumerator();
-      var device = devices.GetDevice(id);
-      if (device.State.CompareTo(DeviceState.Unplugged) == 0 || device.State.CompareTo(DeviceState.NotPresent) == 0 || device.State.CompareTo(DeviceState.Disabled) == 0) device = null;
-      if (device != null)
-      {
-        this.id = device.ID;
-        title = device.FriendlyName.Substring(0, device.FriendlyName.IndexOf("(")).Trim();
-        description = device.DeviceFriendlyName;
-        volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
-        icon = null;
-        mute = device.AudioEndpointVolume.Mute;
-        if (device.DataFlow == DataFlow.Render)
-        {
-          var sessions = device.AudioSessionManager.Sessions;
-          for (int i = 0; i < sessions.Count; i++)
-          {
-            if (sessions[i].IsSystemSoundsSession) continue;
-            var channel = new MixerChannel(sessions[i], device.AudioEndpointVolume.MasterVolumeLevelScalar);
-            channels[(int)sessions[i].GetProcessID] = channel;
-          }
         }
       }
     }
