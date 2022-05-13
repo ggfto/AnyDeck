@@ -3,7 +3,7 @@ class HTMLComponent extends HTMLElement {
     constructor() {
         super();
         $(document).ready(() => {
-            fetch(`js/components/slider/${this.cpName}.html`).then(async response =>{
+            fetch(`js/components/${this.cpName}/${this.cpName}.html`).then(async response =>{
                 let html = await response.text()
                 $(this).append(html)
                 this.querySelector('#myRange').onchange = () => this.onValueChange()
@@ -11,7 +11,7 @@ class HTMLComponent extends HTMLElement {
                 let resource = document.createElement('link');
                 resource.rel = 'stylesheet';
                 resource.type = 'text/css';
-                resource.href = `js/components/slider/${this.cpName}.css`;
+                resource.href = `js/components/${this.cpName}/${this.cpName}.css`;
                 if(this.isResourceLoaded(resource)) {
                     resource = undefined;
                 }
