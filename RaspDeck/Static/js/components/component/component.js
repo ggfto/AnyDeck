@@ -6,7 +6,6 @@ class HTMLComponent extends HTMLElement {
             fetch(`js/components/${this.cpName}/${this.cpName}.html`).then(async response =>{
                 let html = await response.text()
                 $(this).append(html)
-                this.querySelector('#myRange').onchange = () => this.onValueChange()
                 let head = document.getElementsByTagName('head')[0];
                 let resource = document.createElement('link');
                 resource.rel = 'stylesheet';
@@ -26,7 +25,9 @@ class HTMLComponent extends HTMLElement {
     setCallback(callback) {
         this.callback = callback
     }
+    
     onReady() {}
+
     attributeChangedCallback() {}
 
     isResourceLoaded(resource) {

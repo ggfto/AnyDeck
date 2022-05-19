@@ -63,7 +63,7 @@ function loadResource(filename, type) {
 }
 
 async function newComponent(container, data) {
-    let result = `<g5-slider></g5-slider>`;
+    let result = `<raspdeck-slider></raspdeck-slider>`;
     let attributes = data.attributes;
     if(attributes.id != undefined) {
         result = $.parseHTML(result);

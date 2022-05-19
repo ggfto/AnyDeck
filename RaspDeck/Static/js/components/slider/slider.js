@@ -1,4 +1,4 @@
-class G5Slider extends HTMLComponent {
+class RaspDeckSlider extends HTMLComponent {
     cpName = 'slider'
     constructor() {
         super();
@@ -24,19 +24,24 @@ class G5Slider extends HTMLComponent {
             if(this.icon != null && this.icon != undefined) {
                 this.querySelector('#icone').setAttribute('src', this.icon)
             } else {
-                $(this.querySelector('#icone')).hide()
+                //$(this.querySelector('#icone')).hide()
             }
-            this.querySelector("#myRange").setAttribute('orient', this.getAttribute('orient'))
+            this.querySelector("#slider").setAttribute('orient', this.getAttribute('orient'))
         } catch (error) {}
+    }
+
+    onReady() {
+        console.log(this);
+        this.querySelector('#mySlider').onchange = () => this.onValueChange()
     }
 
     onValueChange() {
         if(this.callback != undefined) {
-            this.callback(this.querySelector('#myRange').value)
+            this.callback(this.querySelector('#mySlider').value)
         } else {
-            console.log(this.querySelector('#myRange').value)
+            console.log(this.querySelector('#mySlider').value)
         }
     }
 }
 
-window.customElements.define('g5-slider', G5Slider);
+window.customElements.define('raspdeck-slider', RaspDeckSlider);

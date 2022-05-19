@@ -8,7 +8,7 @@ $(document).ready(async function() {
         return data;
     });*/
     let i = 0;
-    for(i=0;i<10;i++) {
+    for(i=0;i<1;i++) {
         let data = {
             attributes: {
                 name: 'slider',
