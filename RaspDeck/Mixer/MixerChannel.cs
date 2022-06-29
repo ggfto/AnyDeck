@@ -27,7 +27,7 @@ namespace RaspDeck
         {
           Process process = Process.GetProcessById((int)session.GetProcessID);
           description = (process.ProcessName == "Spotify" ? process.ProcessName + ": " : "") + (process.MainWindowTitle != "" ? process.MainWindowTitle : process.ProcessName);
-          String SigBase64 = null;
+          String base64 = null;
           id = (int)session.GetProcessID;
           try
           {
@@ -35,7 +35,7 @@ namespace RaspDeck
             System.IO.MemoryStream ms = new MemoryStream();
             bImage.Save(ms, ImageFormat.Png);
             byte[] byteImage = ms.ToArray();
-            SigBase64 = "data:image/png;base64," + Convert.ToBase64String(byteImage);
+            base64 = "data:image/png;base64," + Convert.ToBase64String(byteImage);
           }
           catch (Exception ex)
           {
@@ -43,7 +43,7 @@ namespace RaspDeck
           }
           finally
           {
-            icon = SigBase64;
+            icon = base64;
           }
         }
       }
